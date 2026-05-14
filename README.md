@@ -33,3 +33,10 @@ The purpose of this project is to explore and practice:
 ## Notes
 
 This project is for learning purposes only.
+
+## Packages needed
+
+- gcc
+- libcrul
+- gtk3
+
