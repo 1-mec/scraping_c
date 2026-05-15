@@ -5,11 +5,12 @@
 #include "header/file_related.h"
 #include "header/utils.h"
 #include "header/inputs.h"
+#include "ui_header/init_gtk.h"
 
-int main(){
+int main(int argc, char * argv[]){
 
     printf("=====================================\n");
-    
+
     Params * res = malloc(sizeof(Params));  
     Params params = inputs_params();
     CURLU *h =curl_url();
@@ -79,6 +80,13 @@ int main(){
 
     printf("====================================\n");
 
+    GtkApplication *app;
+    int status;
 
-    return 0;
+    app = gtk_application_new ("org.gtk.example", G_APPLICATION_FLAGS_NONE);
+    g_signal_connect (app, "activate", G_CALLBACK (activate), NULL);
+    status = g_application_run (G_APPLICATION (app), argc, argv);
+    g_object_unref (app);
+
+    return status;
 }
