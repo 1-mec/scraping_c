@@ -1,10 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "curl.h"
-#include "file_related.h"
-#include "utils.h"
-#include "inputs.h"
+#include "header/curl.h"
+#include "header/file_related.h"
+#include "header/utils.h"
+#include "header/inputs.h"
 
 int main(){
 
@@ -56,10 +56,10 @@ int main(){
     printf("----ok-----\n");
 
     printf("====================aff================\n");
-    aff( &fragment,&host,&password,&path,&port,&query,&scheme, &user, &zoneid);
+    aff( fragment,host,password,path,port,query,scheme,user,zoneid);
     printf("----ok-----\n");
 
-    printf("=====================read_file=================\narg = %s \n",url);
+    printf("=====================read_file=================\n");
     read_file(file_name);
     printf("----ok-----\n");
 

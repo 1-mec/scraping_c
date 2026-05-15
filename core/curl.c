@@ -1,4 +1,4 @@
-#include "curl.h"
+#include "../header/curl.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -6,7 +6,7 @@
 #include <unistd.h>    
 #include <sys/file.h>   
 
-void info_curl(CURLU ** url, char ** fragment,char ** host,char ** password,char ** path,char ** port,char ** query,char ** scheme,char ** user,char ** zoneid){
+void info_curl(CURLU * url, char ** fragment,char ** host,char ** password,char ** path,char ** port,char ** query,char ** scheme,char ** user,char ** zoneid){
     curl_url_get(url, CURLUPART_FRAGMENT, fragment, 0);
     curl_url_get(url, CURLUPART_HOST, host, 0);
     curl_url_get(url, CURLUPART_PASSWORD, password, 0);
@@ -36,7 +36,7 @@ void save_file_w_name(char * arg,char * name){
 
     CURL * easy = curl_easy_init();
     if (!easy) {
-        printf("Server down or no connection\n");
+        printf("Server éteint ou pas de connexion\n");
         exit(1);
     }
 
@@ -56,7 +56,7 @@ void save_file_w_name(char * arg,char * name){
 void save_file(char * arg){
     CURL * easy = curl_easy_init();
     if (!easy) {
-        printf("Server down or no connection\n");
+        printf("Server éteint ou pas de connexion\n");
         exit(1);
     }
 

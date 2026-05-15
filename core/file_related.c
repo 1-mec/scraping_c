@@ -6,9 +6,8 @@
 #include <sys/file.h>
 #include <stdbool.h>
 
-#include "file_related.h"
-#include "utils.h"
-
+#include "../header/file_related.h"
+#include "../header/utils.h"
 
 void save_log(char * fragment,char * host,char * password,char * path,char * port,char * query,char * scheme,char * user,char * zoneid){
 
@@ -24,12 +23,8 @@ void save_log(char * fragment,char * host,char * password,char * path,char * por
         exit(1);
     }
 
-    printf("---------------------------------------------------------------------\n");
-    printf("--%s---\n",aff_host_path_scheme(host,path,scheme));
     char * tmp = aff_host_path_scheme(host,path,scheme);
-    printf("\n%s\n",tmp);
 
-    printf("---------------------------------------------------------------------\n");
     write(fd,tmp,strlen(tmp));
     flock( fd,LOCK_UN);
     free(tmp);
@@ -37,8 +32,6 @@ void save_log(char * fragment,char * host,char * password,char * path,char * por
 }
 
 void read_file(char * file){
-
-    printf("--oooo--|%s|--oooo--\n",file);
 
     int fd = open(file  , O_RDONLY );
     if (fd == -1){
@@ -52,8 +45,15 @@ void read_file(char * file){
     int cpt = 0;
     bool fst = false;
     int nb_links = 0;
+    int max_links = 360;
 
     ssize_t rd ;
+
+    char ** lst = malloc(max_links * sizeof(char *) );
+    if (lst == NULL){
+        perror("malloc");
+        exit(1);
+    }
 
     while((rd = read(fd,&c,1)) >0){
         
@@ -71,7 +71,11 @@ void read_file(char * file){
         if (fst){
             if (c == '"'){
                 res[cpt] = '\0';
-                printf("lien = https%s\n",res);
+                int len = strlen(res)+strlen("lien = https\n")+1;
+                char * tmp = malloc(len);
+                snprintf(tmp,len,"lien = https%s\n",res);
+                lst[nb_links] =strdup(tmp);
+                free(tmp);
 
                 fst = false;
                 cpt = 0;
@@ -86,6 +90,12 @@ void read_file(char * file){
         perror("read");
     }
 
+    for( int i = 0; i < nb_links ; i++){
+        //printf("-> %s\n",lst[i]);
+        free(lst[i]);
+    }
+    free(lst);
+    
     printf("il y a %d liens\n",nb_links);
 
     close(fd);

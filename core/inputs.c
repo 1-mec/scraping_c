@@ -2,7 +2,7 @@
 #include <string.h> 
 #include <stdlib.h>
 
-#include "inputs.h"
+#include "../header/inputs.h"
 
 Params inputs_params(){
     Params * res = malloc(sizeof(Params));  
