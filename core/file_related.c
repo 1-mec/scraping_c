@@ -9,6 +9,11 @@
 #include "../header/file_related.h"
 #include "../header/utils.h"
 
+int nb_links = 0;
+int max_links = 360;
+
+items * lst_w_index;
+
 void save_log(char * fragment,char * host,char * password,char * path,char * port,char * query,char * scheme,char * user,char * zoneid){
 
     int fd = open("results/log.txt", O_WRONLY | O_CREAT | O_TRUNC , S_IRUSR | S_IWUSR);
@@ -49,16 +54,9 @@ void read_file(char * file){
     char res[4096] = "";
     int cpt = 0;
     bool fst = false;
-    int nb_links = 0;
-    int max_links = 360;
-
     ssize_t rd ;
+    lst_w_index = init_items();
 
-    char ** lst = malloc(max_links * sizeof(char *) );
-    if (lst == NULL){
-        perror("malloc");
-        exit(1);
-    }
 
     while((rd = read(fd,&c,1)) >0){
         
@@ -78,8 +76,10 @@ void read_file(char * file){
                 res[cpt] = '\0';
                 int len = strlen(res)+strlen("lien = https\n")+1;
                 char * tmp = malloc(len);
-                snprintf(tmp,len,"lien = https%s\n",res);
-                lst[nb_links] =strdup(tmp);
+                snprintf(tmp,len,"lien = https%s",res);
+                lst_w_index[nb_links].lst = strdup(tmp);
+                lst_w_index[nb_links].index = 1+nb_links;
+
                 free(tmp);
 
                 fst = false;
@@ -94,14 +94,23 @@ void read_file(char * file){
     if (rd == -1) {
         perror("read");
     }
-
-    for( int i = 0; i < nb_links ; i++){
-        //printf("-> %s\n",lst[i]);
-        free(lst[i]);
-    }
-    free(lst);
     
-    printf("il y a %d liens\n",nb_links);
-
     close(fd);
+}
+
+int get_nb_links(){
+    return nb_links;
+}
+
+items * init_items(){
+    items * lst_w_index = malloc(sizeof(items)*max_links);
+    return lst_w_index;
+}
+
+items * get_items(){
+    return lst_w_index;
+}
+
+void print_items(items * l,int i){
+    printf("%s & index = %d\n",l[i].lst, l[i].index);
 }

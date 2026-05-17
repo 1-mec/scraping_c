@@ -12,19 +12,9 @@ int main(int argc, char * argv[]){
     printf("=====================================\n");
 
     Params * res = malloc(sizeof(Params));  
+    items * lst_w_index = init_items();
     Params params = inputs_params();
     CURLU *h =curl_url();
-
-    CURLUcode curl_fragment;
-    CURLUcode curl_host;
-    CURLUcode curl_password;
-    CURLUcode curl_path;
-    CURLUcode curl_port;
-    CURLUcode curl_query;
-    CURLUcode curl_scheme;
-    CURLUcode curl_user;
-    CURLUcode curl_zoneid;
-
 
     char * fragment;
     char * host;
@@ -39,6 +29,7 @@ int main(int argc, char * argv[]){
     char * url = params.result_url;
     char * file_name = params.file_name;
 
+    
 
     if (params.bool_file == 1){
         save_file_w_name(url, file_name);
@@ -80,6 +71,8 @@ int main(int argc, char * argv[]){
 
     printf("====================================\n");
 
+
+    gtk_init(&argc, &argv);
     GtkApplication *app;
     int status;
 
