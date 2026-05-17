@@ -15,17 +15,6 @@ int main(int argc, char * argv[]){
     Params params = inputs_params();
     CURLU *h =curl_url();
 
-    CURLUcode curl_fragment;
-    CURLUcode curl_host;
-    CURLUcode curl_password;
-    CURLUcode curl_path;
-    CURLUcode curl_port;
-    CURLUcode curl_query;
-    CURLUcode curl_scheme;
-    CURLUcode curl_user;
-    CURLUcode curl_zoneid;
-
-
     char * fragment;
     char * host;
     char * password;
@@ -78,7 +67,7 @@ int main(int argc, char * argv[]){
     curl_url_cleanup(h);
     printf("----ok-----\n");
 
-    printf("====================================\n");
+    printf("==================gtk==================\n");
 
     GtkApplication *app;
     int status;
@@ -88,5 +77,5 @@ int main(int argc, char * argv[]){
     status = g_application_run (G_APPLICATION (app), argc, argv);
     g_object_unref (app);
 
-    return status;
+    return 0;
 }

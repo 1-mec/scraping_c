@@ -9,6 +9,33 @@
 #include "../header/file_related.h"
 #include "../header/utils.h"
 
+int nb_links = 0;
+int max_links = 360;
+
+char ** lst ;
+items * test;
+
+void save_lst(items * res , char * tmp , int index){
+    res[index].lst = malloc((strlen(tmp)+1));
+    res[index].index = index+1;
+    strcpy(res[index].lst,tmp);
+}
+
+items * init_items(){
+    items * test = (items *)malloc(sizeof(items)*max_links);
+    return test;
+}
+
+
+void free_items(items * res){
+    for (int i  = 0; i < nb_links ; i++){
+        free(res[i].lst);
+        free(res[i].index);
+    }
+    free(res);
+}
+
+
 void save_log(char * fragment,char * host,char * password,char * path,char * port,char * query,char * scheme,char * user,char * zoneid){
 
     int fd = open("results/log.txt", O_WRONLY | O_CREAT | O_TRUNC , S_IRUSR | S_IWUSR);
@@ -37,6 +64,8 @@ void read_file(char * file){
     ssize_t len = strlen(file)+strlen("results/")+1;
     snprintf(file,len,"results/%s",tmp);
     
+
+    test =  init_items();
     
     int fd = open(file  , O_RDONLY );
     if (fd == -1){
@@ -49,12 +78,9 @@ void read_file(char * file){
     char res[4096] = "";
     int cpt = 0;
     bool fst = false;
-    int nb_links = 0;
-    int max_links = 360;
-
     ssize_t rd ;
 
-    char ** lst = malloc(max_links * sizeof(char *) );
+    lst = malloc(max_links * sizeof(char *) );
     if (lst == NULL){
         perror("malloc");
         exit(1);
@@ -80,6 +106,7 @@ void read_file(char * file){
                 char * tmp = malloc(len);
                 snprintf(tmp,len,"lien = https%s\n",res);
                 lst[nb_links] =strdup(tmp);
+                save_lst(test , tmp, nb_links);
                 free(tmp);
 
                 fst = false;
@@ -90,18 +117,26 @@ void read_file(char * file){
         }
         
     }
+    free(tmp);
 
     if (rd == -1) {
         perror("read");
     }
 
     for( int i = 0; i < nb_links ; i++){
-        //printf("-> %s\n",lst[i]);
         free(lst[i]);
     }
     free(lst);
     
     printf("il y a %d liens\n",nb_links);
-
+    printf("-> %s le 2eme\n",res);
     close(fd);
+}
+
+int get_nb_links(){
+    return nb_links;
+}
+
+items * get_lst(){
+    return test;
 }
