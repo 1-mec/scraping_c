@@ -18,5 +18,4 @@ void init_lst(int max_links);
 items * init_items(void);
 void free_items(items * res);
 
-
 #endif

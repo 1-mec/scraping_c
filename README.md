@@ -26,6 +26,7 @@ The purpose of this project is to explore and practice:
 - **GCC**
 
 ## Run & Build
+#### you've to create the folder named "results" first  
 ### Running exe will build the project and execute it directly 
 ```bash
 ./exe
